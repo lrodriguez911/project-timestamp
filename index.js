@@ -24,7 +24,15 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+let dateTime = new Date();
 
+let timeStamp = Math.floor(dateTime / 1000);
+
+app.get("/api/:date?", (req, res) => res.json({
+  unix: dateTime.getTime(),
+  utc: Date()
+}
+))
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function () {
