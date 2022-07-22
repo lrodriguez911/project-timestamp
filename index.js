@@ -9,7 +9,7 @@ const app = express();
 // so that your API is remotely testable by FCC 
 const cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
-
+app.use((req,res, next) => {console.log(`${req.method} ${req.path} - ${req.ip}`); next()})
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
@@ -28,9 +28,10 @@ let dateTime = new Date();
 
 let timeStamp = Math.floor(dateTime / 1000);
 
-app.get("/api/:date?", (req, res) => res.json({
+app.get("/api/:date", (req, res) => res.json({
   unix: dateTime.getTime(),
-  utc: Date()
+  utc: Date(),
+  date: req.query
 }
 ))
 
