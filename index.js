@@ -24,16 +24,24 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-let dateTime = new Date();
 
-let timeStamp = Math.floor(dateTime / 1000);
+app.get("/api/:date", (req, res) => {
+  let response = req.params.date;
+  if(response.includes('-'))
+  {res.json(
+  {unix: new Date(response).getTime(),
+  utc: new Date(response).toUTCString()
+}) } 
+  if(!isNaN(Date.parse(response))) 
+  { res.json({ error : "Invalid Date" })}
+  if(Number.isInteger(response)){
+    res.json({
+      unix: response,
+      utc: new Date(response).toUTCString()
+    })
+  }
+})
 
-app.get("/api/:date", (req, res) => res.json({
-  unix: dateTime.getTime(),
-  utc: Date(),
-  date: req.query
-}
-))
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function () {
