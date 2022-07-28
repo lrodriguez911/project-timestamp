@@ -26,31 +26,24 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-let resObj = {};
 
 app.get("/api/:date", (req, res) => {
-  console.log(req.params.date)
-  console.log(typeof req.params.date)
   let response = req.params.date;
-  if (response.includes("-")) {
-    res.json({
-      unix: new Date(response).getTime(),
-      utc: new Date(response).toUTCString(),
-    });
-  }
-  if (!isNaN(response)) {
+  if(response.includes('-'))
+  {res.json(
+  {unix: new Date(response).getTime(),
+  utc: new Date(response).toUTCString()
+}) } 
+  if(!isNaN(Date.parse(response))) 
+  { res.json({ error : "Invalid Date" })}
+  if(Number.isInteger(response)){
     res.json({
       unix: response,
-      utc: new Date(response).toUTCString(),
-    });
+      utc: new Date(response).toUTCString()
+    })
   }
-  if (response === '') {
-    res.json({
-      unix: new Date().getTime(),
-      utc: new Date(response).toUTCString(),
-    });
-  }
-});
+})
+
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function () {
