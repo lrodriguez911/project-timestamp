@@ -28,20 +28,27 @@ app.get("/api/hello", function (req, res) {
 
 
 app.get("/api/:date", (req, res) => {
+  
   let response = req.params.date;
-  if(response.includes('-'))
+  let date_res = new Date(response);
+  let date_Unix = date_res.getTime();
+  let date_UTC = date_res.toUTCString();
+
+  if(date_res.toString() !== 'Invalid Date')  
   {res.json(
-  {unix: new Date(response).getTime(),
-  utc: new Date(response).toUTCString()
-}) } 
-  if(!isNaN(Date.parse(response))) 
-  { res.json({ error : "Invalid Date" })}
-  if(Number.isInteger(response)){
-    res.json({
-      unix: response,
-      utc: new Date(response).toUTCString()
-    })
-  }
+    {unix: date_Unix,
+  utc: date_UTC}
+  )} 
+  
+if(date_res !== new Date(parseInt(response)) && !response.includes('a')){
+    res.json(
+    {unix: new Date(parseInt(response)).getTime(),
+  utc: new Date(parseInt(response)).toUTCString()}
+  ) }
+
+    if(date_res.toString() === 'Invalid Date')
+  {res.json({error: 'Invalid Date'})}
+
 })
 
 
