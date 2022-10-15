@@ -25,7 +25,13 @@ app.get("/", function (req, res) {
 app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
-
+app.get("/api", (req, res) => {
+  res.json({
+    unix: new Date().getTime(); ,
+    utc: new Date().UTCString()
+  })
+}
+)
 
 app.get("/api/:date", (req, res) => {
   
