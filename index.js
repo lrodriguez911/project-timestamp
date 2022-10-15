@@ -10,7 +10,6 @@ const app = express();
 const cors = require("cors");
 app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path} - ${req.ip}`);
   next();
 });
 // http://expressjs.com/en/starter/static-files.html
@@ -27,31 +26,27 @@ app.get("/api/hello", function (req, res) {
 });
 app.get("/api", (req, res) => {
   res.json({
-    unix: new Date().getTime(); ,
-    utc: new Date().UTCString()
+    unix: new Date().getTime(),
+    utc: new Date().toUTCString()
   })
 }
 )
-
 app.get("/api/:date", (req, res) => {
-  
   let response = req.params.date;
   let date_res = new Date(response);
   let date_Unix = date_res.getTime();
   let date_UTC = date_res.toUTCString();
-
   if(date_res.toString() !== 'Invalid Date')  
-  {res.json(
+  {
+    res.json(
     {unix: date_Unix,
   utc: date_UTC}
   )} 
-  
 if(date_res !== new Date(parseInt(response)) && !response.includes('a')){
     res.json(
     {unix: new Date(parseInt(response)).getTime(),
   utc: new Date(parseInt(response)).toUTCString()}
   ) }
-
     if(date_res.toString() === 'Invalid Date')
   {res.json({error: 'Invalid Date'})}
 
